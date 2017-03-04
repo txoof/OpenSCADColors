@@ -159,17 +159,22 @@ module wheel(segments = 72, rings = 72, pixel = [10, 10, 10]) {
 function colorArray
   create an X by Y array of color data 
 */
-function colorArray(segments = 3, rings = 5) = 
-[
-  for(i = [0:360/segments:359.999])
-    //[for(j = [1:rings])  RGB(i)]
-    [for (j = [1:rings]) RGBScale(i, (j-1)/rings)]
-];
+function colorArray(segments = 3, rings = 5, scaled = false) = 
+  scaled ? 
+    [
+      for(i = [0:360/segments:359.999])
+        //[for(j = [1:rings])  RGB(i)]
+        [for (j = [1:rings]) RGBScale(i, (j-1)/rings)]
+    ] : 
+    [
+      for(i = [0:360/segments:359.999])
+        [for(j = [1:rings])  RGB(i)]
+    ];
 
 
 
-module grid(x = 10, y = 10, pixel = [10, 10, 10]) {
-  myColor = colorArray(x, y);
+module grid(x = 10, y = 10, scaled = false, pixel = [10, 10, 10]) {
+  myColor = colorArray(x, y, scaled);
   translate([(-(pixel[0])*x)/2, (-(pixel[1])*y)/2, 0]) {
     for (i = [0:x-1]) {
       for (j = [0:y-1]) {
@@ -181,4 +186,4 @@ module grid(x = 10, y = 10, pixel = [10, 10, 10]) {
   }
 }
 //wheel(144, 90);
-grid(90, 90);
+grid(3,15, true);
