@@ -43,13 +43,20 @@ function red(angle = 0) =
   : ((angle >=240) ? (wCos(angle, 270) >= 1 ? 1 : wCos(angle, 270)) 
   : 0);
 
+/*
+function redScale
+  Scales red values between Pi/3 to 5Pi/3 for a color wheel as a percentage 
+  of 1 radian
 
+  accepts:
+    * angle (real)
+    * r (real): radians
+  returns:
+    * positive real between 0 and 1
+*/
 function redScale(angle = 0, r = 1) =
   ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
-    red(angle) : red(angle) + (1 - red(angle)) * (1 - r); 
-
-echo(redScale(90, 0.5)*255);
-wheel();
+    red(angle) : red(angle) + ((1 - red(angle)) * (1 - r)); 
 
 /*
 function green
@@ -69,6 +76,23 @@ function green(angle = 0) =
     ((wCos(angle, 90) >= 1) ? 1 : wCos(angle, 90)) : 0;
 
 /*
+function greenScale
+  Scales green values between xPi/3 to xPi/3 for a color wheel as a percentage 
+  of 1 radian
+  
+  accepts:
+    * angle (real)
+    * r (real): radians
+  returns:
+    * positive real between 0 and 1
+*/
+function greenScale(angle = 0, r = 1) =
+  ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
+    red(angle) : red(angle) + ((1 - red(angle)) * (1 - r)); 
+
+
+
+/*
 function blue
   provides green values for a color wheel with a radius of  radian where:
     blue increases from 0 to 1 over interval 2Pi/3 to Pi
@@ -83,10 +107,10 @@ function blue(angle = 0) =
   angle >= 120 ?
     ((wCos(angle, 180) >= 1) ? 1 : wCos(angle, 180)) : 0; 
 
-
 function RGB(angle = 0) = [red(angle), green(angle), blue(angle)];
 
-//function RGBScale(angle = 0, radius = 1) = 
+function RGBScale(angle = 0, r = 1) = 
+  [redScale(angle, r), greenScale(angle, r), blueScale(angle, r)];
 
 /*
 module wheel
@@ -104,6 +128,7 @@ module wheel(segments = 72, rings = 10, pixel = [1, 1, 1]) {
     //echo(str("segnum: ", segnum, " angle: ", i, " RGB: ", [red(i ), green(i), blue(i)]));
     for (j = [1 : rings-0 ]) {
       //echo("j:", j);
+      //add radius calculation here
       rotate([0, 0, i])
         translate([j*pixel[2], 0, 0])
         //color([red(i, 0), green(i, 0), blue(i, 0)])
