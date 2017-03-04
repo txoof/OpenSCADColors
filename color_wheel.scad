@@ -30,6 +30,7 @@ function red
     red increases from 0 to 1 over interval 4Pi/3 to 5Pi/3
     red is 1 over interval  5Pi/3 to Pi/3
     red decreases from 1 to 0 over interval Pi/3 to 2Pi/3
+    phase shift = 0 and 270
 
   accepts:
     * angle (real)
@@ -43,12 +44,20 @@ function red(angle = 0) =
   : 0);
 
 
+function redScale(angle = 0, r = 1) =
+  ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
+    red(angle) : red(angle) + (1 - red(angle)) * (1 - r); 
+
+echo(redScale(90, 0.5)*255);
+wheel();
+
 /*
 function green
   provides green values for a color wheel with a radius of 1 radian where:
     green increases from 0 to 1 over interval 0 to Pi/3
     green is 1 over interval Pi/3 to Pi
     green decreases from 1 to 0 over interval Pi to 4Pi/3
+    phase shift = 90
 
   accepts:
     * angle (real)
@@ -75,8 +84,9 @@ function blue(angle = 0) =
     ((wCos(angle, 180) >= 1) ? 1 : wCos(angle, 180)) : 0; 
 
 
-function RGB(angle) = [red(angle), green(angle), blue(angle)];
+function RGB(angle = 0) = [red(angle), green(angle), blue(angle)];
 
+//function RGBScale(angle = 0, radius = 1) = 
 
 /*
 module wheel
@@ -87,15 +97,15 @@ module wheel
     * rings (integer): number of itterations 
     * pixel (array): [x dimension, y dimension, z dimension] of elements
 */
-module wheel(segments = 36, rings = 10, pixel = [1, 1, 1]) {
+module wheel(segments = 72, rings = 10, pixel = [1, 1, 1]) {
   angle = 360/segments;
   for (i = [0 : 360/segments : 359.99999]) {
     segnum = i/360*segments;
     //echo(str("segnum: ", segnum, " angle: ", i, " RGB: ", [red(i ), green(i), blue(i)]));
-    for (j = [1 : rings ]) {
+    for (j = [1 : rings-0 ]) {
       //echo("j:", j);
       rotate([0, 0, i])
-        translate([j*pixel[2]*1, 0, 0])
+        translate([j*pixel[2], 0, 0])
         //color([red(i, 0), green(i, 0), blue(i, 0)])
         color(RGB(i))
         cube([pixel[0], chord(r = pixel[1]*j+1, angle = angle), pixel[2]], center = true);
@@ -112,7 +122,6 @@ function colorArray(segments = 3, rings = 5) =
 ];
 
 
-//wheel(7, 11);
 
 module grid(x = 10, y = 10, pixel = [10, 10, 10]) {
   myColor = colorArray(x, y);
@@ -126,5 +135,5 @@ module grid(x = 10, y = 10, pixel = [10, 10, 10]) {
     }
   }
 }
-
-grid();
+//wheel();
+//grid();
