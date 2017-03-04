@@ -122,8 +122,28 @@ function blueScale(angle = 0, r = 1) =
   (angle >= 180 && angle <= 300) ?
     blue(angle) : blue(angle) + ((1 - blue(angle)) * (1 - r)); 
 
+/*
+function RGB
+  returns RGB value as real value between 0 an 1.
+
+  accepts:
+    * angle (real)
+  returns:
+    * RGB (array of real)
+
+*/
 function RGB(angle = 0) = [red(angle), green(angle), blue(angle)];
 
+/*
+funciton RGBScale
+  returns RGB value scaled by distance from origin (0-1)
+
+  accepts:
+    * angle (real)
+    * r (real): radius between 0-1
+  returns:
+    * RGB (array of real)
+*/
 function RGBScale(angle = 0, r = 1) = 
   [redScale(angle, r), greenScale(angle, r), blueScale(angle, r)];
 
@@ -157,7 +177,15 @@ module wheel(segments = 72, rings = 72, pixel = [10, 10, 10]) {
 
 /*
 function colorArray
-  create an X by Y array of color data 
+  create an X by Y array of RGB values
+
+  accepts:
+    * segments (integer): number of segments
+    * rings (integer): number of itterations 
+    * scaled (boolean): when true, return a value scaled by 
+      distance from origin
+  returns:
+    * X by Y array of RGB values
 */
 function colorArray(segments = 3, rings = 5, scaled = false) = 
   scaled ? 
@@ -173,7 +201,7 @@ function colorArray(segments = 3, rings = 5, scaled = false) =
 
 
 
-module grid(x = 10, y = 10, scaled = false, pixel = [10, 10, 10]) {
+module grid(x = 10, y = 10, scaled = true, pixel = [10, 10, 10]) {
   myColor = colorArray(x, y, scaled);
   translate([(-(pixel[0])*x)/2, (-(pixel[1])*y)/2, 0]) {
     for (i = [0:x-1]) {
@@ -186,4 +214,6 @@ module grid(x = 10, y = 10, scaled = false, pixel = [10, 10, 10]) {
   }
 }
 //wheel(144, 90);
-grid(3,15, true);
+grid(11,15, true);
+
+//echo(colorArray(11, 15));
