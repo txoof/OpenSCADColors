@@ -45,7 +45,7 @@ function red(angle = 0) =
 
 /*
 function redScale
-  Scales red values between Pi/3 to 5Pi/3 for a color wheel as a percentage 
+  Scales red values between 5Pi/3 to Pi/3 for a color wheel as a percentage 
   of 1 radian
 
   accepts:
@@ -77,7 +77,7 @@ function green(angle = 0) =
 
 /*
 function greenScale
-  Scales green values between xPi/3 to xPi/3 for a color wheel as a percentage 
+  Scales green values between Pi/3 to 3Pi/3 for a color wheel as a percentage 
   of 1 radian
   
   accepts:
@@ -87,8 +87,8 @@ function greenScale
     * positive real between 0 and 1
 */
 function greenScale(angle = 0, r = 1) =
-  ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
-    red(angle) : red(angle) + ((1 - red(angle)) * (1 - r)); 
+  (angle >= 60 && angle <= 180) ?
+    green(angle) : green(angle) + ((1 - green(angle)) * (1 - r)); 
 
 
 
@@ -109,7 +109,7 @@ function blue(angle = 0) =
 
 /*
 function blueScale
-  Scales blue values between xPi/3 to xPi/3 for a color wheel as a percentage 
+  Scales blue values between 3Pi/3 to 5Pi/3 for a color wheel as a percentage 
   of 1 radian
   
   accepts:
@@ -119,11 +119,8 @@ function blueScale
     * positive real between 0 and 1
 */
 function blueScale(angle = 0, r = 1) =
-  ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
-    red(angle) : blue(angle) + ((1 - blue(angle)) * (1 - r)); 
-
-
-
+  (angle >= 180 && angle <= 300) ?
+    blue(angle) : blue(angle) + ((1 - blue(angle)) * (1 - r)); 
 
 function RGB(angle = 0) = [red(angle), green(angle), blue(angle)];
 
@@ -150,7 +147,8 @@ module wheel(segments = 72, rings = 10, pixel = [1, 1, 1]) {
       rotate([0, 0, i])
         translate([j*pixel[2], 0, 0])
         //color([red(i, 0), green(i, 0), blue(i, 0)])
-        color(RGB(i))
+        color(RGBScale(i, (j-1)/rings))
+        //color(RGB(i))
         cube([pixel[0], chord(r = pixel[1]*j+1, angle = angle), pixel[2]], center = true);
     }
 
@@ -162,6 +160,7 @@ function colorArray(segments = 3, rings = 5) =
 [
   for(i = [0:360/segments:359.999])
     [for(j = [1:rings])  RGB(i)]
+    //[for (j = [1:rings]) RGBScale(i, (j-1)/rings)]
 ];
 
 
@@ -178,5 +177,5 @@ module grid(x = 10, y = 10, pixel = [10, 10, 10]) {
     }
   }
 }
-//wheel();
+wheel(90, 90);
 //grid();
