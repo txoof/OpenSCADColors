@@ -107,6 +107,24 @@ function blue(angle = 0) =
   angle >= 120 ?
     ((wCos(angle, 180) >= 1) ? 1 : wCos(angle, 180)) : 0; 
 
+/*
+function blueScale
+  Scales blue values between xPi/3 to xPi/3 for a color wheel as a percentage 
+  of 1 radian
+  
+  accepts:
+    * angle (real)
+    * r (real): radians
+  returns:
+    * positive real between 0 and 1
+*/
+function blueScale(angle = 0, r = 1) =
+  ((angle >= 0 && angle <= 60) || (angle >= 300 && angle <= 360)) ?
+    red(angle) : blue(angle) + ((1 - blue(angle)) * (1 - r)); 
+
+
+
+
 function RGB(angle = 0) = [red(angle), green(angle), blue(angle)];
 
 function RGBScale(angle = 0, r = 1) = 
