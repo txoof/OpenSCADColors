@@ -22,6 +22,10 @@ WheelIterations = 144; // [1:255]
 GridColumns = 144; //[1:255]
 //Grid Rows
 GridRows = 144; //[1:255]
+//Demo Rows
+DemoRows = 10; //[2:50]
+//Demo Columns
+DemoColumns = 5; //[2:50]
 
 thingiverse();
 
@@ -31,11 +35,11 @@ module thingiverse() {
   } 
 
   if (demo == "grid") {
-    grid(GridColumns, GridRows, ColorScaling);
+    grid(GridColumns, GridRows, ColorScaling, pixel = [20, 20, 20]);
   }
 
   if (demo == "objDemo") {
-    objDemo();
+    objDemo(DemoRows, DemoColumns, scaled = ColorScaling);
   }
 }
 
@@ -303,10 +307,11 @@ module wheel(segments = 72, rings = 72, scaled = true, pixel = [10, 10, 10]) {
   }
 }
 
-module objDemo(rows = 15, columns = 5, size = 20, minQual = 3, step = 1) {
+module objDemo(rows = 15, columns = 5, size = 150, minQual = 3, 
+                step = 1, scaled = false) {
   sep = 1; //seperation of elements
   //create an array of RGB values that matches the rows and columns
-  myColors = colorArray(rows+1, columns+1, scaled = true);
+  myColors = colorArray(rows+1, columns+1, scaled = scaled);
   for (i = [1:rows]) {
     for (j = [1:columns]) {
       // make some interesting shapes by adjusting the quality variable
