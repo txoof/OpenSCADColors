@@ -41,7 +41,7 @@ for (row=[0:len(myArray)-1]) { //three iterations
 */
 /* [Demo] */
 //Which Demo?
-demo = "wheel"; //[wheel:Color Wheel, grid:Color Palette, objDemo:Object Demo]
+demo = "wheel"; //[wheel:Color Wheel, grid:Color Palette, cylinder:Color Cylinder, objDemo:Object Demo]
 //Use color scaling?
 ColorScaling = true; //[true:Use Color Scaling, false:Do Not Use Color Scaling]
 //Segments to divide color wheel into
@@ -59,6 +59,7 @@ DemoColumns = 5; //[2:50]
 
 thingiverse();
 
+
 module thingiverse() {
   if (demo == "wheel") {
     wheel(WheelSegments, WheelIterations, ColorScaling);
@@ -70,6 +71,10 @@ module thingiverse() {
 
   if (demo == "objDemo") {
     objDemo(DemoRows, DemoColumns, scaled = ColorScaling);
+  }
+
+  if (demo == "cylinder") {
+    demoCyl(segments = WheelSegments, layers = WheelIterations, scaled = ColorScaling);
   }
 }
 
@@ -337,7 +342,7 @@ module wheel(segments = 72, rings = 72, scaled = true, pixel = [10, 10, 10]) {
   }
 }
 
-module objDemo(rows = 15, columns = 5, size = 150, minQual = 3, 
+module objDemo(rows = 15, columns = 5, size = 150, minQual = 2, 
                 step = 1, scaled = false) {
   sep = 1; //seperation of elements
   //create an array of RGB values that matches the rows and columns
@@ -354,6 +359,23 @@ module objDemo(rows = 15, columns = 5, size = 150, minQual = 3,
     }
   }
 
+}
+
+module demoCyl(segments = 12, layers = 10, r = 1000, scaled = true) {
+      //chord(r = r, angle = 360/segments); 
+  angle = 360/segments;
+  cuUnit = chord(r = r, angle = 360/segments);
+  myColor = colorArray(segments, layers, scaled = scaled);
+  translate([0, 0, -(layers*cuUnit)/2]) {
+    for (j=[0:layers-1]) {
+      for (i=[0:segments-1]) {
+            color(myColor[i][j])
+          rotate([0, 0, angle*i])
+          translate([r, 0, j*cuUnit])
+          cube(cuUnit, center = true);
+      }
+    }
+  }
 }
 
 
