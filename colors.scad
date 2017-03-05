@@ -11,7 +11,7 @@ Library to produce 2D array of RGB values scaled across an abitrary size
 
 /* [Demo] */
 //Which Demo?
-demo = "wheel"; //[wheel:Color Wheel, grid:Color Pallet]
+demo = "wheel"; //[wheel:Color Wheel, grid:Color Palet, objDemo:Object Demo]
 //Use color scaling?
 ColorScaling = true; //[true:Use Color Scaling, false:Do Not Use Color Scaling]
 //Segments to divide color wheel into
@@ -32,6 +32,10 @@ module thingiverse() {
 
   if (demo == "grid") {
     grid(GridColumns, GridRows, ColorScaling);
+  }
+
+  if (demo == "objDemo") {
+    objDemo();
   }
 }
 
@@ -297,6 +301,24 @@ module wheel(segments = 72, rings = 72, scaled = true, pixel = [10, 10, 10]) {
     }
 
   }
+}
+
+module objDemo(rows = 2, columns = 3, size = 20, minQual = 36, step = 1) {
+  sep = 1; //seperation of elements
+  //create an array of RGB values that matches the rows and columns
+  myColors = colorArray(rows, columns, scaled = true);
+  for (i = [1:rows]) {
+    for (j = [1:columns]) {
+      // make some interesting shapes by adjusting the quality
+      $fn = (minQual+i*step) >= 36 ? 36 : (minQual+i*step);
+      //pull the next color from the color array 
+      color(myColors[i-1][j-1])
+      translate([size+(size*2+size*sep)*(i-1), 
+                size+(size*2+size*sep)*(j-1), 0])
+      sphere(size, $fn);
+    }
+  }
+
 }
 
 //wheel(144, 90, true);
