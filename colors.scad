@@ -41,17 +41,17 @@ for (row=[0:len(myArray)-1]) { //three iterations
 */
 /* [Demo] */
 //Which Demo?
-demo = "wheel"; //[wheel:Color Wheel, grid:Color Palet, objDemo:Object Demo]
+demo = "wheel"; //[wheel:Color Wheel, grid:Color Palette, objDemo:Object Demo]
 //Use color scaling?
 ColorScaling = true; //[true:Use Color Scaling, false:Do Not Use Color Scaling]
 //Segments to divide color wheel into
 WheelSegments = 144; //[2:255]
 // Iterations 
 WheelIterations = 144; // [1:255]
-//Grid Columns
-GridColumns = 144; //[1:255]
-//Grid Rows
-GridRows = 144; //[1:255]
+//Palette Columns
+PaletteColumns = 144; //[1:255]
+//Palette Rows
+PaletteRows = 144; //[1:255]
 //Demo Rows
 DemoRows = 10; //[2:50]
 //Demo Columns
@@ -65,7 +65,7 @@ module thingiverse() {
   } 
 
   if (demo == "grid") {
-    grid(GridColumns, GridRows, ColorScaling, pixel = [20, 20, 20]);
+    grid(PaletteColumns, PaletteRows, ColorScaling, pixel = [20, 20, 20]);
   }
 
   if (demo == "objDemo") {
