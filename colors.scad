@@ -7,8 +7,38 @@ https://www.thingiverse.com/txoof/about
 released under GPL V3.0
 
 Library to produce 2D array of RGB values scaled across an abitrary size
+
+To use this library:
+  * Move the library into your path 
+    eg: /Users/myHomeDirectory/OpenSCAD/libraries/
+  * Add the following line to your OpenSCAD project:
+    include </Users/myHomeDirectory/OpenSCAD/libraries/colors.scad>
+  * Begin using the functions:
+    myColorArray = colorArray(10, 10, scaled = true);
+
+  * Functions are documented at each function
+  * Examples can be found below
+*/
+// uncomment the following examples to test
+//wheel(144, 90, true);
+//grid(255, 255, true);
+
+//echo(chord(10, 30));
+//echo(RGB(30));
+//echo(colorArray(11, 15));
+
+/*
+echo(RGBScale(55, 1));
+echo(RGBScale(55, 0.5));
+echo(RGBScale(55, 0));
 */
 
+/*
+myArray = colorArray(3, 3, scaled = false);
+for (row=[0:len(myArray)-1]) { //three iterations
+  echo(myArray[row]);
+}
+*/
 /* [Demo] */
 //Which Demo?
 demo = "wheel"; //[wheel:Color Wheel, grid:Color Palet, objDemo:Object Demo]
@@ -326,22 +356,4 @@ module objDemo(rows = 15, columns = 5, size = 150, minQual = 3,
 
 }
 
-//wheel(144, 90, true);
-//grid(255, 255, true);
 
-//echo(chord(10, 30));
-//echo(RGB(30));
-//echo(colorArray(11, 15));
-
-/*
-echo(RGBScale(55, 1));
-echo(RGBScale(55, 0.5));
-echo(RGBScale(55, 0));
-*/
-
-/*
-myArray = colorArray(3, 3, scaled = false);
-for (row=[0:len(myArray)-1]) { //three iterations
-  echo(myArray[row]);
-}
-*/
