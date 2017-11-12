@@ -1,3 +1,26 @@
+/* [Demo] */
+//Which Demo?
+demo = "wheel"; //[wheel:Color Wheel, grid:Color Palette, cylinder:Color Cylinder, objDemo:Object Demo]
+//Use color scaling?
+ColorScaling = true; //[true:Use Color Scaling, false:Do Not Use Color Scaling]
+//Segments to divide color wheel into
+WheelSegments = 144; //[2:255]
+// Iterations 
+WheelIterations = 144; // [1:255]
+//Palette Columns
+PaletteColumns = 144; //[1:255]
+//Palette Rows
+PaletteRows = 144; //[1:255]
+//Demo Rows
+DemoRows = 10; //[2:50]
+//Demo Columns
+DemoColumns = 5; //[2:50]
+
+thingiverse();
+
+
+
+
 /*
 Rainbow Color Library
 =====================
@@ -39,26 +62,6 @@ for (row=[0:len(myArray)-1]) { //three iterations
   echo(myArray[row]);
 }
 */
-/* [Demo] */
-//Which Demo?
-demo = "wheel"; //[wheel:Color Wheel, grid:Color Palette, cylinder:Color Cylinder, objDemo:Object Demo]
-//Use color scaling?
-ColorScaling = true; //[true:Use Color Scaling, false:Do Not Use Color Scaling]
-//Segments to divide color wheel into
-WheelSegments = 144; //[2:255]
-// Iterations 
-WheelIterations = 144; // [1:255]
-//Palette Columns
-PaletteColumns = 144; //[1:255]
-//Palette Rows
-PaletteRows = 144; //[1:255]
-//Demo Rows
-DemoRows = 10; //[2:50]
-//Demo Columns
-DemoColumns = 5; //[2:50]
-
-thingiverse();
-
 
 module thingiverse() {
   if (demo == "wheel") {
@@ -75,7 +78,9 @@ module thingiverse() {
 
   if (demo == "cylinder") {
     demoCyl(segments = WheelSegments, layers = WheelIterations, scaled = ColorScaling);
+    // preview[view:south west, tilt:bottom]
   }
+
 }
 
 /*
@@ -342,37 +347,70 @@ module wheel(segments = 72, rings = 72, scaled = true, pixel = [10, 10, 10]) {
   }
 }
 
-module objDemo(rows = 15, columns = 5, size = 150, minQual = 2, 
-                step = 1, scaled = false) {
+
+/*
+module objDemo
+  draws an array of objects using the colorArray() function to provide colors
+
+  accepts:
+    * rows (integer): number of rows of objects
+    * columns (integer): number of columns of objects
+    * size (real): radius of objects
+    * minQual (integer): minimum quality value to use
+    * step (integer): steps to increase quality by
+    * scaled (boolean): when true, use color scaling
+*/
+module objDemo(rows = 15, columns = 5, size = 150, minQual = 3, 
+                step = 1, scaled = true) {
   sep = 1; //seperation of elements
   //create an array of RGB values that matches the rows and columns
   myColors = colorArray(rows+1, columns+1, scaled = scaled);
+  
+  // loop through the rows
   for (i = [1:rows]) {
+    // loop through the columns
     for (j = [1:columns]) {
       // make some interesting shapes by adjusting the quality variable
-      $fn = (minQual+i*step) >= 36 ? 36 : (minQual+i*step);
-      //pull the next color from the color array 
+      $fn = ((minQual-1)+(i*step)) >= 36 ? 36 : (minQual-1)+(i*step);
+
+      // pull the next color from the color array 
       color(myColors[i-1][j-1])
-      translate([size+(size*2+size*sep)*(i-1), 
-                size+(size*2+size*sep)*(j-1), 0])
-      sphere(size, $fn);
+        translate([size+(size*2+size*sep)*(i-1), 
+                  size+(size*2+size*sep)*(j-1), 0])
+        // draw a sphere with the quality set above
+        sphere(size, $fn);
     }
   }
 
 }
 
+/*
+module demoCyl
+  draw a hollow cylinder using the colorArray() function
+
+  accepts:
+    * segments (integer): number of segments to divde cylinder into
+    * layers (integer): number of layers
+    * r (real): radius of cylinder 
+    * scaled (boolean): when true use color scaling
+*/
+
 module demoCyl(segments = 12, layers = 10, r = 1000, scaled = true) {
-      //chord(r = r, angle = 360/segments); 
+
   angle = 360/segments;
   cuUnit = chord(r = r, angle = 360/segments);
+  
+  // set the color array equal to the number of segments and layers
   myColor = colorArray(segments, layers, scaled = scaled);
   translate([0, 0, -(layers*cuUnit)/2]) {
     for (j=[0:layers-1]) {
       for (i=[0:segments-1]) {
-            color(myColor[i][j])
-          rotate([0, 0, angle*i])
-          translate([r, 0, j*cuUnit])
-          cube(cuUnit, center = true);
+          // draw a cube and rotate to make each segment of each layer
+          // pull a color from the array
+          color(myColor[i][j])
+            rotate([0, 0, angle*i])
+            translate([r, 0, j*cuUnit])
+            cube(cuUnit, center = true);
       }
     }
   }
