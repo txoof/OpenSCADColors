@@ -63,6 +63,149 @@ for (row=[0:len(myArray)-1]) { //three iterations
 }
 */
 
+//help_color("");
+
+module help_color(modName = false) {
+  //edit content below this line
+  modules =
+            [["colorArray",
+              "function: colorAray(columns = <integer>, rows = <integer, scaled = <boolean>)",
+              "returns: <vector of vectors>",
+              "Description: returns column X rows vector of interpolated RGB values",
+              "Paramaters:",
+              "     columns      <integer>   1-255 columns",
+              "     rows         <integer>   1-255 rows",
+	      "     scaled       <boolean>   scale the colors from white to full color"],
+
+             ["chord",
+              "function: chord(r = <real>, angle = <real>)",
+              "returns: <real>",
+              "Description: returns a chord length given a radius and angle",
+              "     r           <real>      radius of circle",
+              "     angle       <real>      0 < angle < 180 in degrees"],
+             ["RGB",
+              "function: RGB(angle = <real>)",
+              "returns: <RGB vector>",
+              "Description: returns vector of RGB around color wheel relative to angle",
+              "Paramaters: ",
+              "     angle     <real>         0 <= angle <= 360"],
+             ["RGBScale",
+              "function: RGBScale(angle = <real>, r = <real>",
+              "returns: <RGB vector>",
+              "Description: returns vector of RGB around color wheel relative to angle scaled with distance from center 0 = [255, 255, 255]",
+              "Paramaters: ",
+              "     angle    <real>         0 <= angle <= 360",
+              "     r        <real>         0 <= radius <= 1"],
+             ["red",
+              "function: red(angle = <real>)",
+              "returns: <real>",
+              "Description: returns red value along a color wheel relative to angle",
+              "Paramaters: ",
+              "   angle   <real>          0 <= angle <= 360"],
+              ["redScaled", 
+               "function: red(angle = <real>, r = <real>)",
+               "returns: <real>",
+               "Description: returns red value along a color wheel relative to angle scaled with distance from center 0 = [255, 255, 255]",
+               "Paramaters: ",
+               "    angle   <real>          0 <= angle <= 360",
+               "    r       <real>          0 <= radius <= 1"],
+              ["green",              
+               "function: red(angle = <real>)",
+               "returns: <real>",
+               "Description: returns greenvalue along a color wheel relative to angle",
+               "Paramaters: ",
+               "     angle   <real>          0 <= angle <= 360"],
+              ["greenScaled",
+               "function: red(angle = <real>, r = <real>)",
+               "returns: <real>",
+               "Description: returns green value along a color wheel relative to angle scaled with distance from center 0 = [255, 255, 255]",
+               "Paramaters: ",
+               "    angle   <real>          0 <= angle <= 360",
+               "    r       <real>          0 <= radius <= 1"             
+              ],
+              ["blue",              
+               "function: red(angle = <real>)",
+               "returns: <real>",
+               "Description: returns green value along a color wheel relative to angle",
+               "Paramaters: ",
+               "     angle   <real>          0 <= angle <= 360"],
+              ["blueScaled",
+               "function: red(angle = <real>, r = <real>)",
+               "returns: <real>",
+               "Description: returns blue value along a color wheel relative to angle scaled with distance from center 0 = [255, 255, 255]",
+               "Paramaters: ",
+               "    angle   <real>          0 <= angle <= 360",
+               "    r       <real>          0 <= radius <= 1"],
+              ["wCos",
+               "function: wCos(angle = <real>, shift = <real>)", 
+               "returns: <real>",
+               "Description: returns cos(angle) shifted out of phase by shift degrees - used to calculate colors around a color wheel",
+               "Pramaters: ",
+               "    angle   <real>          0 <= angle <= 360",
+               "    shift   <real>          0 <= angle <= 360"],
+              ["grid",
+               "module: grid(x = <integer>, y = <integer>, scaled = <boolean>, pixel = [x, y, z])",
+               "returns: none (module)",
+               "Description: draws a grid of RGB pixels; pixles can be scaled from [255, 255, 255]",
+               "Paramaters: ",
+               "    x       <integer>       number of columns",
+               "    y       <integer>       number of rows",
+               "    scaled  <boolean>       scale the colors from white to full color",
+               "    pixel   <vector>        [x, y, z] size of pixels in grid"],
+              ["wheel",
+               "module: wheel(segments = <integer>, rings = <integer>, scaled = <boolean>, pixel = [x, y, z])",
+               "returns: none (module)",
+               "Description: draws a color wheel of pixels; pixels can be scaled from [255, 255, 255]",
+               "Paramaters: ",
+               "    segments  <integer>     number of segments to divide wheel into",
+               "    rings     <integer>     number of rings",
+               "    scaled    <boolean>     scale the colors from white to full color",
+               "    pixel     <vector>      [x, y, z] size of base pixel"],
+              ["demoCyl",
+               "module: demoCyl(segments = <integer>, layers = <integer>, r = <real>, scaled = <boolean>",
+               "returns: none (module)",
+               "Description: draws a grid wrapped into a cylinder",
+               "Paramaters: ",
+               "    segments  <integer>     number of segments to divide cylinder into",
+               "    layers    <integer>     number of layers in cylinder",
+               "    r         <real>        radius of cylinder",
+               "    scaled    <boolean>     scale colors from white to full color"]
+             ];
+  //End editable content
+  //DO NOT EDIT BELOW THIS POINT
+
+  //convert string into a vector to make search work properly
+  modVect = [modName];
+  //use the vectorized string to search the modules vector
+  index = search(modVect, modules)[0];
+
+  //chcek if a name was passed
+  if (modName==false || len(modules[index])==undef) {
+      if (len(modules[index])==undef && modName != false) {
+        echo(str("*****Module: ", modName, " not found*****"));
+        echo("");
+      }
+
+      echo("Available Help Topics in this Library:");
+      for (i=[0:len(modules)-1]) {
+        echo(modules[i][0]);
+      }
+      echo("USE: help_colors(\"moduleName \")  ");
+      //assert(modName);
+    } else {
+      //return the first matching entry
+      //-possibly modify this to return all entries - allows partial match
+
+      echo(str("Help for module/function: ", modName));
+      //basic = modules[index[0]][1];
+      //echo(basic);
+      for (text=[1:len(modules[index])-1]) {
+        echo(modules[index][text]);
+      }
+    }
+}
+
+
 module thingiverse() {
   if (demo == "wheel") {
     wheel(WheelSegments, WheelIterations, ColorScaling);
@@ -78,7 +221,7 @@ module thingiverse() {
 
   if (demo == "cylinder") {
     demoCyl(segments = WheelSegments, layers = WheelIterations, scaled = ColorScaling);
-    // preview[view:south west, tilt:bottom]
+    // preview[view:south west, tçilt:bottom]
   }
 
 }
