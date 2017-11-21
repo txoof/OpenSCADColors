@@ -63,7 +63,7 @@ for (row=[0:len(myArray)-1]) { //three iterations
 }
 */
 
-//help_color("");
+//help_color();
 
 module help_color(modName = false) {
   //edit content below this line
